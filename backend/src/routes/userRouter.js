@@ -12,27 +12,40 @@ const userController = require('../controller/userController');
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     UserData:
  *       type: object
  *       required:
  *         - username
  *         - email
  *         - password
+ *         - role
  *       properties:
  *         username:
  *           type: string
  *           description: User's username
+ *           example: admin
  *         email:
  *           type: string
  *           format: email
  *           description: User's email address
+ *           example: admin@test.com
  *         password:
  *           type: string
  *           format: password
  *           description: User's password
+ *           example: Shared@123
  *         role:
  *           type: string
- *           description: User's password
+ *           description: User's role
+ *           example: user
+ *           enum: [user, admin]
+ *     RegisterRequest:
+ *       type: object
+ *       required:
+ *         - data
+ *       properties:
+ *         data:
+ *           $ref: '#/components/schemas/UserData'
  */
 
 /**
@@ -54,30 +67,13 @@ const userController = require('../controller/userController');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       201:
- *         description: User successfully registered
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   description: The user's unique ID
- *                 username:
- *                   type: string
- *                   description: The user's username
- *                 email:
- *                   type: string
- *                   description: The user's email
- *       400:
- *         description: Invalid request body or validation error
- *       409:
- *         description: Username or email already exists
- *       500:
- *         description: Server error
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *           example:
+ *             data:
+ *               username: "test"
+ *               password: "Shared@123"
+ *               email: "test1@test.com"
+ *               role: "user"
  */
 router.post('/register', userController.register);
 
