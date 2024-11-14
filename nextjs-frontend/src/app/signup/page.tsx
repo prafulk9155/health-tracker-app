@@ -7,9 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
-import { UserPlus, Mail, Lock } from 'lucide-react'
+import { UserPlus, Mail, Lock, User } from 'lucide-react'
+import axios from 'axios';
+
+
 
 export default function SignUpPage() {
+    const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
@@ -17,12 +21,30 @@ export default function SignUpPage() {
   const handleSubmit = async (event: React.ReactEvent) => {
     event.preventDefault()
     // Here you would typically send this data to your backend API
-    console.log({ email, password })
-    toast({
-      title: "Account created",
-      description: "You've successfully signed up!",
-    })
-    router.push('/dashboard')
+    console.log({ username,email, password })
+    try {
+        const payload = {
+          data: {
+            username,
+            email,
+            password
+          }
+        }
+  
+        const response = await axios.post('http://localhost:3000/user/register', payload)
+
+    if (response.status === 200) {
+        toast({ title: 'Signup successful!', description: 'success' })
+        router.push('/login') // Redirect to login page or any other route after success
+      }else{
+        toast({ title: response.data.message, description: 'error' })
+      }
+    } catch (error) {
+      toast({ title: 'Signup failed. Please try again.', description: 'error' })
+      console.error('Error during signup:', error)
+    }
+
+    
   }
 
   return (
@@ -34,9 +56,26 @@ export default function SignUpPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+              <Label htmlFor="username" className="flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                
+                <span>Username</span>
+              </Label>
+              <Input
+                id="username"
+                type="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your Username"
+                required
+                className="bg-white/50 dark:bg-gray-700/50"
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
+                
                 <span>Email</span>
               </Label>
               <Input
