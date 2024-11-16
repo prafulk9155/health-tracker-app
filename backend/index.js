@@ -8,6 +8,9 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('./swagger.js');
 
 
+require('dotenv').config();
+
+
 
 
 app.use(express.json());
