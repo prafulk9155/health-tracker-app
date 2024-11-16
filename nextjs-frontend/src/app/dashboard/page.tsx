@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { toast } from "@/components/ui/use-toast"
 import { Activity, Utensils, Moon, Heart } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+
 
 export default function DashboardPage() {
   const [steps, setSteps] = useState(0)
@@ -15,6 +17,9 @@ export default function DashboardPage() {
   const [sleep, setSleep] = useState(0)
   const [mood, setMood] = useState(5)
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const router = useRouter()
+ 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     console.log({ steps, calories, sleep, mood })
@@ -23,10 +28,23 @@ export default function DashboardPage() {
       description: "Your health data has been recorded.",
     })
   }
+  const toggleSwitch= async()=>{
+    
+    setIsEnabled(!isEnabled);
+    router.push('/insights')
+    
+  }
 
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
+      <a href="/insights" className="ancor link">Swich to Insights page</a>
+        {/* <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Switch to graph</span> */}
+
+    
+
+    {/* <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div> */}
+    {/* <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Toggle me</span> */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard icon={Activity} title="Steps" value={steps} unit="steps" />
         <MetricCard icon={Utensils} title="Calories" value={calories} unit="kcal" />

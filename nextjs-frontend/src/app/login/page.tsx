@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 import { LogIn, Mail, Lock, Github, Facebook } from 'lucide-react'
-
+import axios from 'axios'
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,10 +18,32 @@ export default function LoginPage() {
     event.preventDefault()
     // Here you would typically send this data to your backend API for authentication
     console.log({ email, password })
-    toast({
-      title: "Logged in",
-      description: "You've successfully logged in!",
-    })
+
+    try{
+      const payload = {
+        data: {
+          email,
+          password
+        }
+      }
+
+      const response = await axios.post('http://localhost:3000/user/login', payload)
+      if(response.status==200){
+        router.push('/dashboard')
+      }else{
+        toast({ title: response.data.message, description: 'error' })
+      }
+
+    }
+    catch(error){
+      console.log(error)
+    }
+    // toast({
+    //   title: "Logged in",
+    //   description: "You've successfully logged in!",
+    // })
+
+    
     router.push('/dashboard')
   }
 

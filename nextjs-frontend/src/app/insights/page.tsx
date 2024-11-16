@@ -17,7 +17,11 @@ const data = [
 export default function InsightsPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Insights</h1>
+      <div className="">
+      <h1 className="text-3xl font-bold text-left">Insights</h1>
+      <a href="/dashboard" className="anchor link text-right">Swich to Dashboard</a>
+      </div>
+      
       <div className="grid gap-6 md:grid-cols-2">
         <InsightCard
           title="Steps"
